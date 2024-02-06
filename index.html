@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Is it Friday Yet?</title> 
+<title>Is it Friday Yet?</title>
 <style>
   body, html {
     height: 100%;
-    margin: 0; 
+    margin: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -21,12 +22,40 @@
     font-size: 4rem; /* Makes this text larger */
     font-weight: bold;
   }
+  .countdown {
+    font-size: 2rem;
+    margin-top: 20px; /* Adds space above the countdown */
+  }
 </style>
 </head>
 <body>
 <div class="content">
   <p>Is it Friday Yet?</p>
   <p class="big-text">NOT YET JACK</p>
+  <p class="countdown" id="countdown">But it will be in XXXX</p>
 </div>
+
+<script>
+function updateCountdown() {
+  const now = new Date();
+  const nextFriday = new Date(now);
+  nextFriday.setDate(now.getDate() + (7 - now.getDay()) % 7); // Find next Friday
+  nextFriday.setHours(0, 0, 0, 0); // Set to start of the day
+  
+  if (now.getDay() === 5) { // If today is Friday
+    document.getElementById('countdown').innerText = "It's Friday!";
+  } else {
+    const diff = nextFriday - now; // Difference in milliseconds
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    document.getElementById('countdown').innerText = `But it will be in ${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds.`;
+  }
+}
+
+setInterval(updateCountdown, 1000); // Update the countdown every second
+</script>
 </body>
 </html>
